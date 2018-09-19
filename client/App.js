@@ -2,28 +2,50 @@ import React, {Component} from 'react'
 import Nav from './Nav.js'
 import ProductList from './ProductList.js'
 import store, {loadProducts} from './store.js'
-import {Provider} from 'react-redux'
-import {Route, Switch} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import Product from './Product.js'
+import {connect} from 'react-redux'
 
 
 class App extends Component {
     componentDidMount(){
-        store.dispatch(loadProducts())
+        this.props.loadProducts()
     }
 
     render(){
         return (
-            <Provider store = { store }>
             <div>
             <Nav/>
             <Route exact path = "/products" component = {ProductList}/>
             <Route path='/products/:id' component = {Product}/>
             </div>
-            </Provider>
         )
     }
 }
 
-export default App;
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadProducts: () => dispatch(loadProducts())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(App);
+
+
+
+
+
+
+
+
+
+
+
+// const nextProps = Object.entries(nextProps);
+// Object.entries(prevProps).every(([key, val], i) => {
+//     const [nextKey, nextVal] = nextProps[i];
+
+//     return nextKey === key && val === nextVal;
+// })
 
